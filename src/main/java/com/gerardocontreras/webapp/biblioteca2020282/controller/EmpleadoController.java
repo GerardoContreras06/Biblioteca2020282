@@ -49,9 +49,15 @@ public class EmpleadoController {
     public ResponseEntity<Map<String, String>> agregarEmpleado(@RequestBody Empleado empleado){
         Map<String, String> response = new HashMap<>();
         try {
-            empleadoService.guardarEmpleado(empleado);
-            response.put("message", "empleado creado con éxito");
-            return ResponseEntity.ok(response);
+            if (!empleadoService.verificarDpiDuplicado(empleado)) {
+                empleadoService.guardarEmpleado(empleado);
+                response.put("message", "empleado creado con éxito");
+                return ResponseEntity.ok(response);
+            }else{
+                response.put("message", "Error");
+                response.put("err", "El DPI se encuentra duplicado");
+                return ResponseEntity.badRequest().body(response);
+            }
         } catch (Exception e) {
             response.put("message", "Error");
             response.put("err", "Hubo un error al crear el empleado");
@@ -59,7 +65,7 @@ public class EmpleadoController {
         }
     }
 
-    @PutMapping("empleado")
+    @PutMapping("/empleado")
     public ResponseEntity<Map<String, String>> editarEmpleado(@RequestParam Long id, @RequestBody Empleado empleadoNuevo){
         Map<String, String> response = new HashMap<>();
         try {
@@ -69,9 +75,15 @@ public class EmpleadoController {
             empleado.setTelefono(empleadoNuevo.getTelefono());
             empleado.setDireccion(empleadoNuevo.getDireccion());
             empleado.setDpi(empleadoNuevo.getDpi());
-            empleadoService.guardarEmpleado(empleado);
-            response.put("message", "Cliente modificado con exito");
-            return ResponseEntity.ok(response);
+            if (!empleadoService.verificarDpiDuplicado(empleado)) {
+                empleadoService.guardarEmpleado(empleado);
+                response.put("message", "Empleado modificado con exito");
+                return ResponseEntity.ok(response);
+            }else{
+                response.put("message", "Error");
+                response.put("err", "El DPI se encuentra duplicado");
+                return ResponseEntity.badRequest().body(response);
+            }
         } catch (Exception e) {
             response.put("message", "Error");
             response.put("err", "Hubo un error al modificar el empleado");

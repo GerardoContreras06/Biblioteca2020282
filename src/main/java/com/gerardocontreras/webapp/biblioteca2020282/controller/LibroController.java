@@ -59,7 +59,7 @@ public class LibroController {
         }
     }
 
-    @PutMapping("libro")
+    @PutMapping("/libro")
     public ResponseEntity<Map<String, String>> editarLibro(@RequestParam Long id, @RequestBody Libro libroNuevo){
         Map<String, String> response = new HashMap<>();
         try {

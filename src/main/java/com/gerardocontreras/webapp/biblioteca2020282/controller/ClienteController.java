@@ -59,7 +59,7 @@ public class ClienteController {
         }
     }   
 
-    @PutMapping("cliente")
+    @PutMapping("/cliente")
     public ResponseEntity<Map<String, String>> editarCliente(@RequestParam Long dpi, @RequestBody Cliente clienteNuevo){
         Map<String, String> response = new HashMap<>();
         try {
